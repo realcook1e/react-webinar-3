@@ -1,10 +1,11 @@
+import {getMaxCode} from "./utils";
 /**
  * Хранилище состояния приложения
  */
 class Store {
   constructor(initState = {}) {
     this.state = initState;
-	this.currentCode = this.state.list.length;
+	this.currentCode = getMaxCode(this.state.list);
     this.listeners = []; // Слушатели изменений состояния
   }
 

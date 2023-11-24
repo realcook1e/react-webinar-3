@@ -26,3 +26,22 @@ export function createElement(name, props = {}, ...children) {
 
   return element;
 }
+
+// Склонение слова в зависимости от числа
+export function numTitle(num) {
+	if (num % 10 > 1 && num % 10 < 5 && 
+		(+String(num).slice(-2, -1) !== 1)) {
+			return 'раза'
+	}
+	return 'раз';
+}
+
+export function getMaxCode(list) {
+	let maxCode = 0;
+	for (let item of list) {
+		if (item.code > maxCode) {
+			maxCode = item.code;
+		}
+	}
+	return maxCode;
+}
