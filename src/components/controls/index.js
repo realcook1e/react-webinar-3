@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { plural } from "../../utils";
 import "./style.css";
 
-function Controls({ amountInCart, totalPriceInCart, onShowCart }) {
+function Controls({ amountInCart, totalPriceInCart, setModalActivity }) {
   return (
     <div className="Controls">
       <div className="Controls-title">
@@ -19,7 +19,14 @@ function Controls({ amountInCart, totalPriceInCart, onShowCart }) {
         </b>
       </div>
       <div className="Controls-actions">
-        <button onClick={onShowCart}>Перейти</button>
+        <button
+          className="btn"
+          onClick={() => {
+            setModalActivity(true);
+          }}
+        >
+          Перейти
+        </button>
       </div>
     </div>
   );
@@ -28,11 +35,11 @@ function Controls({ amountInCart, totalPriceInCart, onShowCart }) {
 Controls.propTypes = {
   amountInCart: PropTypes.number,
   totalPriceInCart: PropTypes.number,
-  onShowCart: PropTypes.func,
+  setModalActivity: PropTypes.func,
 };
 
 Controls.defaultProps = {
-  onShowCart: () => {},
+  setModalActivity: () => {},
 };
 
 export default React.memo(Controls);

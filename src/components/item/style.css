@@ -21,10 +21,19 @@
 .Item-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: flex-start;
   padding: 20px 20px 20px 10px;
 }
 
 .Item-price {
   margin-right: 20px;
   text-wrap: nowrap;
+}
+
+.Item-count {
+  margin-left: 62px;
+  margin-right: 24px;
+  font-size: 18px;
+  text-wrap: nowrap;
+  font-size: inherit;
 }

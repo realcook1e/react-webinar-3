@@ -3,6 +3,7 @@ import List from "./components/list";
 import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
+import Modal from "./components/modal";
 
 /**
  * Приложение
@@ -22,7 +23,7 @@ function App({ store }) {
     (sum, item) => (item.amountInCart ? sum + 1 : sum),
     0
   );
-  console.log(totalPrice);
+
   const callbacks = {
     onAddItem: useCallback(
       (code) => {
@@ -31,24 +32,30 @@ function App({ store }) {
       [store]
     ),
 
-    onShowModal: useCallback(() => {
-      setModalActivity(true);
-    }, []),
-
-    onCloseModal: useCallback(() => {
-      setModalActivity(false);
-    }, []),
+    onRemoveItem: useCallback(
+      (code) => {
+        store.removeItemFromCart(code);
+      },
+      [store]
+    ),
   };
 
   return (
     <PageLayout>
       <Head title="Магазин" />
       <Controls
-        onShowCart={callbacks.onShowModal}
+        setModalActivity={setModalActivity}
         amountInCart={totalAmount}
         totalPriceInCart={totalPrice}
       />
       <List list={list} onAddItem={callbacks.onAddItem} />
+      <Modal
+        list={list}
+        modalActivity={modalActivity}
+        setModalActivity={setModalActivity}
+        onRemoveItem={callbacks.onRemoveItem}
+        totalPrice={totalPrice}
+      />
     </PageLayout>
   );
 }

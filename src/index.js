@@ -3,15 +3,11 @@ import { createRoot } from "react-dom/client";
 import { generateCode } from "./utils.js";
 import App from "./app.js";
 import Store from "./store.js";
+import "./style.css";
 
 const store = new Store({
   list: [
-    {
-      code: generateCode(),
-      title: "Название товара",
-      price: 100.0,
-      amountInCart: 2,
-    },
+    { code: generateCode(), title: "Название товара", price: 100.0 },
     { code: generateCode(), title: "Книга про React", price: 770 },
     { code: generateCode(), title: "Конфета", price: 33 },
     { code: generateCode(), title: "Трактор", price: 7955320 },

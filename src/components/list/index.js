@@ -8,7 +8,11 @@ function List({ list, onAddItem }) {
     <div className="List">
       {list.map((item) => (
         <div key={item.code} className="List-item">
-          <Item item={item} onAdd={onAddItem} />
+          <Item
+            item={item}
+            action={() => onAddItem(item.code)}
+            text="Добавить"
+          />
         </div>
       ))}
     </div>
@@ -21,13 +25,11 @@ List.propTypes = {
       code: PropTypes.number,
     })
   ).isRequired,
-  onDeleteItem: PropTypes.func,
-  onSelectItem: PropTypes.func,
+  onAddItem: PropTypes.func,
 };
 
 List.defaultProps = {
-  onDeleteItem: () => {},
-  onSelectItem: () => {},
+  onAddItem: () => {},
 };
 
 export default React.memo(List);
