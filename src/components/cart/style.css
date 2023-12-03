@@ -1,0 +1,36 @@
+.Cart {
+  min-height: 250px;
+  max-height: 600px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.Cart-list {
+  margin-bottom: 20px;
+  margin-top: 71px;
+}
+
+.Cart-total {
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 18px;
+  font-weight: 700;
+  margin-right: 120px;
+  margin-bottom: 71px;
+}
+
+.Cart-total span {
+  margin-left: 53px;
+}
+
+.Cart-empty {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 auto;
+}
+
+.Cart .Item-price {
+  margin-right: 0;
+}

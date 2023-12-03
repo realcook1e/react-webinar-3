@@ -1,20 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { plural } from "../../utils";
+import { plural, formatNumber } from "../../utils";
 import "./style.css";
 
-function Controls({ amountInCart, totalPriceInCart, setModalActivity }) {
+function Controls({ uniqueAmount, totalPriceInCart, setModalActivity }) {
   return (
     <div className="Controls">
       <div className="Controls-title">
         В корзине:{" "}
         <b>
-          {amountInCart
-            ? `${amountInCart} ${plural(amountInCart, {
+          {uniqueAmount
+            ? `${uniqueAmount} ${plural(uniqueAmount, {
                 one: "товар",
                 few: "товара",
                 many: "товаров",
-              })} / ${totalPriceInCart} ₽`
+              })} / ${formatNumber(totalPriceInCart)} ₽`
             : "Пусто"}
         </b>
       </div>
@@ -33,7 +33,7 @@ function Controls({ amountInCart, totalPriceInCart, setModalActivity }) {
 }
 
 Controls.propTypes = {
-  amountInCart: PropTypes.number,
+  uniqueAmount: PropTypes.number,
   totalPriceInCart: PropTypes.number,
   setModalActivity: PropTypes.func,
 };

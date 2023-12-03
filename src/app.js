@@ -4,6 +4,7 @@ import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
 import Modal from "./components/modal";
+import Cart from "./components/cart";
 
 /**
  * Приложение
@@ -14,20 +15,17 @@ function App({ store }) {
   const [modalActivity, setModalActivity] = useState(false);
 
   const list = store.getState().list;
-  const totalPrice = list.reduce(
-    (sum, item) =>
-      item.amountInCart ? sum + item.price * item.amountInCart : sum,
-    0
-  );
-  const totalAmount = list.reduce(
-    (sum, item) => (item.amountInCart ? sum + 1 : sum),
-    0
-  );
+  const cart = store
+    .getState()
+    .cart.sort((itemOne, itemTwo) => itemOne.code - itemTwo.code);
+
+  const totalPrice = store.getState().totalPrice;
+  const totalUniqueAmount = cart.length;
 
   const callbacks = {
     onAddItem: useCallback(
-      (code) => {
-        store.addItemToCart(code);
+      (item) => {
+        store.addItemToCart(item);
       },
       [store]
     ),
@@ -45,17 +43,21 @@ function App({ store }) {
       <Head title="Магазин" />
       <Controls
         setModalActivity={setModalActivity}
-        amountInCart={totalAmount}
+        uniqueAmount={totalUniqueAmount}
         totalPriceInCart={totalPrice}
       />
       <List list={list} onAddItem={callbacks.onAddItem} />
       <Modal
-        list={list}
+        title="Корзина"
         modalActivity={modalActivity}
         setModalActivity={setModalActivity}
-        onRemoveItem={callbacks.onRemoveItem}
-        totalPrice={totalPrice}
-      />
+      >
+        <Cart
+          cart={cart}
+          onRemoveItem={callbacks.onRemoveItem}
+          totalPrice={totalPrice}
+        />
+      </Modal>
     </PageLayout>
   );
 }

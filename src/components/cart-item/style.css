@@ -1,0 +1,7 @@
+.Item-count {
+  margin-left: 62px;
+  margin-right: 24px;
+  font-size: 18px;
+  text-wrap: nowrap;
+  font-size: inherit;
+}

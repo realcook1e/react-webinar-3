@@ -39,34 +39,51 @@ class Store {
   }
 
   // Добавление товара в корзину
-  addItemToCart(code) {
-    this.setState({
-      ...this.state,
-      list: this.state.list.map((item) => {
-        if (item.code === code) {
-          return {
-            ...item,
-            amountInCart: item.amountInCart ? ++item.amountInCart : 1,
-          };
-        }
-        return item;
-      }),
-    });
+  addItemToCart(item) {
+    const findItem = this.state.cart.find(
+      (cartItem) => cartItem.code === item.code
+    );
+    if (findItem) {
+      this.setState({
+        ...this.state,
+        cart: this.state.cart.map((cartItem) => {
+          if (cartItem.code === item.code) {
+            return {
+              ...cartItem,
+              amount: cartItem.amount + 1,
+            };
+          }
+          return cartItem;
+        }),
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        cart: [...this.state.cart, { ...item, amount: 1 }],
+      });
+    }
+
+    this.calcTotalPrice();
   }
 
   // Удаление товара из корзины
   removeItemFromCart(code) {
     this.setState({
       ...this.state,
-      list: this.state.list.map((item) => {
-        if (item.code === code) {
-          return {
-            ...item,
-            amountInCart: 0,
-          };
-        }
-        return item;
-      }),
+      cart: this.state.cart.filter((item) => item.code !== code),
+    });
+
+    this.calcTotalPrice();
+  }
+
+  // Расчет общей стоимости
+  calcTotalPrice() {
+    this.setState({
+      ...this.state,
+      totalPrice: this.state.cart.reduce(
+        (sum, item) => sum + item.price * item.amount,
+        0
+      ),
     });
   }
 }
