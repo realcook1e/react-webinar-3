@@ -2,7 +2,7 @@
   display: flex;
   justify-content: flex-start;
   transition: background-color 1s;
-  padding-left: 10px
+  padding-left: 10px;
 }
 
 .Item_selected {
@@ -24,11 +24,21 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 20px
+  gap: 20px;
 }
 
 .Item-price {
   padding: 0 0 0 10px;
   white-space: nowrap;
   font-size: 18px;
+}
+
+.Item-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.Item-link:hover,
+.Item-link:active {
+  text-decoration: underline;
 }

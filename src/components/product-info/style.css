@@ -1,0 +1,30 @@
+.ProductInfo {
+  padding: 40px;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  flex-grow: 0;
+  align-items: start;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.ProductInfo p {
+  margin: 0;
+  padding: 0;
+}
+
+.ProductInfo-category-value,
+.ProductInfo-country-value,
+.ProductInfo-year-value,
+.ProductInfo-price {
+  font-weight: 700;
+}
+
+.ProductInfo-price {
+  font-size: 24px;
+}
+
+.ProductInfo-button {
+  padding: 2px 8px;
+}

@@ -1,15 +1,15 @@
-import {createRoot} from 'react-dom/client';
-import App from './app';
+import { createRoot } from "react-dom/client";
 import Store from "./store";
-import {StoreContext} from "./store/context";
+import { StoreContext } from "./store/context";
+import { Router } from "./router";
 
 const store = new Store();
 
-const root = createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById("root"));
 
 // Первый рендер приложения
 root.render(
   <StoreContext.Provider value={store}>
-    <App/>
+    <Router />
   </StoreContext.Provider>
 );
