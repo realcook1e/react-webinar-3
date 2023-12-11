@@ -25,7 +25,7 @@ function Pagination({ currPage, totalPages, changePage }) {
             {i + 1}
           </button>
         ))}
-        <span>...</span>
+        <span className="Pagination-dots">...</span>
         <button>{totalPages}</button>
       </>
     );
@@ -33,7 +33,7 @@ function Pagination({ currPage, totalPages, changePage }) {
     innerContent = (
       <>
         {<button>1</button>}
-        <span>...</span>
+        <span className="Pagination-dots">...</span>
         {Array.from({ length: 3 }, (_, i) => (
           <button
             className={currPage === totalPages - 2 + i ? "active" : ""}
@@ -48,7 +48,7 @@ function Pagination({ currPage, totalPages, changePage }) {
     innerContent = (
       <>
         <button>1</button>
-        {currPage > 3 && <span>...</span>}
+        {currPage > 3 && <span className="Pagination-dots">...</span>}
         {Array.from({ length: 3 }, (_, i) => (
           <button
             className={currPage === currPage + i - 1 ? "active" : ""}
@@ -57,7 +57,9 @@ function Pagination({ currPage, totalPages, changePage }) {
             {currPage + i - 1}
           </button>
         ))}
-        {currPage < totalPages - 2 && <span>...</span>}
+        {currPage < totalPages - 2 && (
+          <span className="Pagination-dots">...</span>
+        )}
         <button>{totalPages}</button>
       </>
     );

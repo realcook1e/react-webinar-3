@@ -1,6 +1,9 @@
 import Basket from "./basket";
+import Main from "./main";
+import Product from "../pages/product";
+import NotFound from "../pages/notfound";
 import useSelector from "../store/use-selector";
-import { Outlet } from "react-router-dom";
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
 
 /**
  * Приложение
@@ -11,8 +14,14 @@ function App() {
 
   return (
     <>
-      <Outlet />
-      {activeModal === "basket" && <Basket />}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="product/:id" element={<Product />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        {activeModal === "basket" && <Basket />}
+      </BrowserRouter>
     </>
   );
 }

@@ -4,7 +4,6 @@ import { numberFormat } from "../../utils";
 import { cn as bem } from "@bem-react/classname";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { routes } from "../../router";
 import "./style.css";
 
 function ItemBasket(props) {
@@ -20,7 +19,8 @@ function ItemBasket(props) {
       <div className={cn("title")}>
         <Link
           className={cn("link")}
-          to={`${routes.PRODUCTS}/${props.item._id}`}
+          to={`product/${props.item._id}`}
+          onClick={props.closeModal}
         >
           {props.item.title}
         </Link>

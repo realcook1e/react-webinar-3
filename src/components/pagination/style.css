@@ -12,12 +12,13 @@
 }
 
 .Pagination button {
-  padding: 1px;
   background-color: transparent;
+  padding: 0 3px;
   border: none;
   outline: none;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .Pagination button:hover {
@@ -29,4 +30,8 @@
 .Pagination button:active {
   color: #ffffff;
   background-color: #0087e9;
+}
+
+.Pagination-dots {
+  color: #ccc;
 }

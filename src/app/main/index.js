@@ -7,6 +7,8 @@ import List from "../../components/list";
 import useStore from "../../store/use-store";
 import useSelector from "../../store/use-selector";
 import Pagination from "../../components/pagination";
+import Menu from "../../components/menu";
+import Positioner from "../../components/positioner";
 
 function Main() {
   const store = useStore();
@@ -56,11 +58,14 @@ function Main() {
   return (
     <PageLayout>
       <Head title="Магазин" />
-      <BasketTool
-        onOpen={callbacks.openModalBasket}
-        amount={select.amount}
-        sum={select.sum}
-      />
+      <Positioner>
+        <Menu />
+        <BasketTool
+          onOpen={callbacks.openModalBasket}
+          amount={select.amount}
+          sum={select.sum}
+        />
+      </Positioner>
       <List list={select.list} renderItem={renders.item} />
       <Pagination
         currPage={select.skip / select.limit + 1}

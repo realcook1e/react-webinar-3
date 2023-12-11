@@ -2,7 +2,6 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import { cn as bem } from "@bem-react/classname";
 import { Link } from "react-router-dom";
-import { routes } from "../../router";
 import { numberFormat } from "../../utils";
 import "./style.css";
 
@@ -17,10 +16,7 @@ function Item(props) {
     <div className={cn()}>
       {/*<div className={cn('code')}>{props.item._id}</div>*/}
       <div className={cn("title")}>
-        <Link
-          className={cn("link")}
-          to={`${routes.PRODUCTS}/${props.item._id}`}
-        >
+        <Link className={cn("link")} to={`product/${props.item._id}`}>
           {props.item.title}
         </Link>
       </div>
