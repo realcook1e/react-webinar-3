@@ -1,37 +1,32 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useSelector from "../../hooks/use-selector";
-import useStore from "../../hooks/use-store";
 import useTranslate from "../../hooks/use-translate";
-import useInit from "../../hooks/use-init";
+import useStore from "../../hooks/use-store";
+import useSelector from "../../hooks/use-selector";
+
 import Navigation from "../../containers/navigation";
 import PageLayout from "../../components/page-layout";
 import Head from "../../components/head";
-import User from "../../components/user";
-import CatalogFilter from "../../containers/catalog-filter";
-import CatalogList from "../../containers/catalog-list";
 import LocaleSelect from "../../containers/locale-select";
+import User from "../../components/user";
+import ProfileInfo from "../../components/profile-info";
 
-/**
- * Главная страница - первичная загрузка каталога
- */
-function Main() {
+function Profile() {
   const store = useStore();
   const navigate = useNavigate();
 
-  useInit(
-    () => {
-      store.actions.catalog.initParams();
-      store.actions.catalog.loadCategories();
-    },
-    [],
-    true
-  );
-
   const select = useSelector((state) => ({
-    token: state.auth.token,
     username: state.auth.username,
+    token: state.auth.token,
+    user: state.auth.user,
   }));
+
+  useEffect(() => {
+    if (!select.token) {
+      navigate(`/login`);
+    }
+    store.actions.auth.loadUserProfile();
+  }, [select.token]);
 
   const callbacks = {
     onLogout: useCallback(() => {
@@ -56,10 +51,9 @@ function Main() {
         <LocaleSelect />
       </Head>
       <Navigation />
-      <CatalogFilter />
-      <CatalogList />
+      <ProfileInfo user={select.user} t={t} />
     </PageLayout>
   );
 }
 
-export default memo(Main);
+export default memo(Profile);

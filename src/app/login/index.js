@@ -1,43 +1,48 @@
-import { memo, useCallback } from "react";
+import { memo, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useSelector from "../../hooks/use-selector";
 import useStore from "../../hooks/use-store";
 import useTranslate from "../../hooks/use-translate";
-import useInit from "../../hooks/use-init";
+import useSelector from "../../hooks/use-selector";
+
 import Navigation from "../../containers/navigation";
 import PageLayout from "../../components/page-layout";
 import Head from "../../components/head";
-import User from "../../components/user";
-import CatalogFilter from "../../containers/catalog-filter";
-import CatalogList from "../../containers/catalog-list";
 import LocaleSelect from "../../containers/locale-select";
+import AuthForm from "../../components/auth-form";
+import User from "../../components/user";
 
-/**
- * Главная страница - первичная загрузка каталога
- */
-function Main() {
-  const store = useStore();
+function Login() {
   const navigate = useNavigate();
-
-  useInit(
-    () => {
-      store.actions.catalog.initParams();
-      store.actions.catalog.loadCategories();
-    },
-    [],
-    true
-  );
-
+  const store = useStore();
   const select = useSelector((state) => ({
+    error: state.auth.error,
     token: state.auth.token,
     username: state.auth.username,
   }));
 
+  useEffect(() => {
+    if (select.token) {
+      store.actions.auth.loadUserProfile();
+      navigate("/profile");
+    }
+  }, [select.token]);
+
   const callbacks = {
+    onLogin: useCallback(
+      async (login, password) => {
+        const token = await store.actions.auth.login(login, password);
+        if (token) {
+          navigate("/profile");
+        }
+      },
+      [store]
+    ),
+
     onLogout: useCallback(() => {
       store.actions.auth.logout();
     }, [store]),
-    onLogin: useCallback(() => {
+
+    goToLogin: useCallback(() => {
       navigate("/login");
     }, [store]),
   };
@@ -49,17 +54,16 @@ function Main() {
       <User
         username={select.username}
         onLogout={callbacks.onLogout}
-        onLogin={callbacks.onLogin}
+        onLogin={callbacks.goToLogin}
         t={t}
       />
       <Head title={t("title")}>
         <LocaleSelect />
       </Head>
       <Navigation />
-      <CatalogFilter />
-      <CatalogList />
+      <AuthForm onLogin={callbacks.onLogin} error={select.error} t={t} />
     </PageLayout>
   );
 }
 
-export default memo(Main);
+export default memo(Login);

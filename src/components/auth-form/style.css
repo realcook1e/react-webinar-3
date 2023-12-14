@@ -1,0 +1,31 @@
+.AuthForm {
+  padding: 20px;
+}
+
+.AuthForm-title {
+  margin-top: 22px;
+  margin-bottom: 0;
+}
+
+.AuthForm-input {
+  box-sizing: border-box;
+  width: 203px;
+  height: 26px;
+  font-size: 16px;
+  padding: 2px;
+}
+
+.AuthForm-label {
+  margin-top: 18px;
+  display: block;
+}
+
+.AuthForm-error {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: rgba(255, 0, 0, 0);
+}
+
+.AuthForm-error.active {
+  color: rgba(255, 0, 0, 1);
+}
