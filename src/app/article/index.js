@@ -46,7 +46,7 @@ function Article() {
     onLogout: useCallback(() => {
       store.actions.auth.logout();
     }, [store]),
-    onNavigate: useCallback(() => {
+    onLogin: useCallback(() => {
       navigate(
         `/login?prevPath=${window.location.pathname + window.location.search}`
       );
@@ -57,7 +57,7 @@ function Article() {
     <PageLayout>
       <User
         username={select.username}
-        onNavigate={callbacks.onNavigate}
+        onLogin={callbacks.onLogin}
         onLogout={callbacks.onLogout}
         t={t}
       />

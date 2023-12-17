@@ -13,10 +13,12 @@ function User({ username, onLogout, onLogin, t }) {
     },
   };
 
+  const token = localStorage.getItem("token");
+
   return (
     <div className="User">
       {username && <Link to="/profile">{username}</Link>}
-      <button onClick={username ? callbacks.onLogout : callbacks.onLogin}>
+      <button onClick={token ? callbacks.onLogout : callbacks.onLogin}>
         {username ? t("user.logout") : t("user.login")}
       </button>
     </div>

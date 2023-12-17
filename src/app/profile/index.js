@@ -1,8 +1,9 @@
-import { memo, useCallback, useEffect } from "react";
+import { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import useTranslate from "../../hooks/use-translate";
 import useStore from "../../hooks/use-store";
 import useSelector from "../../hooks/use-selector";
+import useInit from "../../hooks/use-init";
 
 import Navigation from "../../containers/navigation";
 import PageLayout from "../../components/page-layout";
@@ -10,6 +11,7 @@ import Head from "../../components/head";
 import LocaleSelect from "../../containers/locale-select";
 import User from "../../components/user";
 import ProfileInfo from "../../components/profile-info";
+import Spinner from "../../components/spinner";
 
 function Profile() {
   const store = useStore();
@@ -17,23 +19,26 @@ function Profile() {
 
   const select = useSelector((state) => ({
     username: state.auth.username,
-    token: state.auth.token,
-    user: state.auth.user,
+    user: state.profile.user,
+    waiting: state.auth.waiting,
   }));
 
-  useEffect(() => {
-    if (!select.token) {
-      navigate(`/login`);
-    }
-    store.actions.auth.loadUserProfile();
-  }, [select.token]);
+  useInit(
+    () => {
+      store.actions.profile.loadUserProfile();
+    },
+    [],
+    true
+  );
 
   const callbacks = {
     onLogout: useCallback(() => {
       store.actions.auth.logout();
     }, [store]),
     onLogin: useCallback(() => {
-      navigate("/login");
+      navigate(
+        `/login?prevPath=${window.location.pathname + window.location.search}`
+      );
     }, [store]),
   };
 
@@ -51,7 +56,9 @@ function Profile() {
         <LocaleSelect />
       </Head>
       <Navigation />
-      <ProfileInfo user={select.user} t={t} />
+      <Spinner active={select.waiting}>
+        <ProfileInfo user={select.user} t={t} />
+      </Spinner>
     </PageLayout>
   );
 }

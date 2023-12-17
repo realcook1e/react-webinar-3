@@ -12,6 +12,7 @@ import AuthForm from "../../components/auth-form";
 import User from "../../components/user";
 
 function Login() {
+  const prevPath = new URLSearchParams(location.search).get("prevPath");
   const navigate = useNavigate();
   const store = useStore();
   const select = useSelector((state) => ({
@@ -21,10 +22,7 @@ function Login() {
   }));
 
   useEffect(() => {
-    if (select.token) {
-      store.actions.auth.loadUserProfile();
-      navigate("/profile");
-    }
+    if (select.token) navigate(prevPath || "/profile");
   }, [select.token]);
 
   const callbacks = {
@@ -32,7 +30,7 @@ function Login() {
       async (login, password) => {
         const token = await store.actions.auth.login(login, password);
         if (token) {
-          navigate("/profile");
+          navigate(prevPath || "/profile");
         }
       },
       [store]

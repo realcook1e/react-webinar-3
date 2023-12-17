@@ -22,7 +22,7 @@ function Main() {
   useInit(
     () => {
       store.actions.catalog.initParams();
-      store.actions.catalog.loadCategories();
+      store.actions.category.loadCategories();
     },
     [],
     true
@@ -38,7 +38,7 @@ function Main() {
       store.actions.auth.logout();
     }, [store]),
     onLogin: useCallback(() => {
-      navigate("/login");
+      navigate(`/login?prevPath=/`);
     }, [store]),
   };
 

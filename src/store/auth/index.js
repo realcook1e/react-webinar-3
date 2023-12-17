@@ -13,6 +13,7 @@ class AuthState extends StoreModule {
       username,
       token,
       user: {},
+      isAuth: token ? true : false,
     };
   }
 
@@ -47,6 +48,7 @@ class AuthState extends StoreModule {
           token: json.result.token,
           user: json.result.user,
           username: json.result.user.profile.name,
+          isAuth: true,
         },
         "Успех авторизации"
       );
@@ -82,6 +84,7 @@ class AuthState extends StoreModule {
           username: null,
           profile: null,
           waiting: false,
+          isAuth: false,
         },
         "Выход пользователя"
       );
@@ -93,47 +96,8 @@ class AuthState extends StoreModule {
         token: null,
         error: e.message,
         waiting: false,
+        isAuth: false,
       });
-    }
-  }
-
-  async loadUserProfile() {
-    const token = this.getState().token;
-    if (!token) return;
-
-    try {
-      const response = await fetch(`/api/v1/users/self?fields=*`, {
-        method: "GET",
-        headers: {
-          "X-Token": token,
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
-      const json = await response.json();
-
-      if (response.status !== 200) {
-        throw new Error(json.error.data.issues[0].message);
-      }
-
-      this.setState(
-        {
-          error: null,
-          token,
-          user: { ...json.result },
-          username: json.result.profile.name,
-          waiting: false,
-        },
-        "Получены данные пользователя"
-      );
-    } catch (e) {
-      console.log("Error: ", e);
-      this.setState(
-        {
-          error: e.message,
-          waiting: false,
-        },
-        "Ошибка получения данных пользователя"
-      );
     }
   }
 }
