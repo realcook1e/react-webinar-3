@@ -1,0 +1,12 @@
+.CommentList {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 40px 120px;
+  gap: 30px;
+}
+
+.CommentList-title {
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+}

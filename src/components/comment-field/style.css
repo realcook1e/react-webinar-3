@@ -1,0 +1,36 @@
+.CommentField {
+  font-family: Arial;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.CommentField-reply {
+  margin-top: 30px;
+}
+
+.CommentField-message {
+  font-size: 14px;
+  color: #000;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.CommentField-message::placeholder {
+  font-size: 14px;
+  color: #000;
+}
+
+.CommentField label {
+  font-size: 12px;
+}
+
+.CommentField-button {
+  padding: 3px 8px;
+}
+
+.CommentField-actions {
+  display: flex;
+  gap: 10px;
+}

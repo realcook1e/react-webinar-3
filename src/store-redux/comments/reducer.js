@@ -1,24 +1,29 @@
+const initialData = {
+  count: 0,
+  items: [],
+};
+
 // Начальное состояние
 export const initialState = {
-  data: {},
-  waiting: false, // признак ожидания загрузки
+  data: initialData,
+  waiting: false,
 };
 
 // Обработчик действий
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case "article/load-start":
-      return { ...state, data: {}, waiting: true };
+    case "comments/load-start":
+      return { ...state, data: initialData, waiting: true };
 
-    case "article/load-success":
+    case "comments/load-success":
       return { ...state, data: action.payload.data, waiting: false };
 
-    case "article/load-error":
+    case "comments/load-error":
       return {
         ...state,
-        data: {},
+        data: initialData,
         waiting: false,
-      }; //@todo текст ошибки сохранять?
+      };
 
     default:
       // Нет изменений

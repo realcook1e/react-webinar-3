@@ -1,0 +1,18 @@
+.CommentAuth {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.CommentAuth span {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.CommentAuth-signin {
+  color: #0087e9;
+}
+
+.CommentAuth-reset {
+  color: #666;
+}

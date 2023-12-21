@@ -1,0 +1,30 @@
+.Comment {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Comment-title {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.Comment p {
+  margin: 0;
+  padding: 0;
+}
+
+.Comment-date {
+  color: #666;
+}
+
+.Comment-text {
+  font-size: 14px;
+}
+
+.Comment-reply {
+  color: #0087e9;
+  font-size: 12px;
+  cursor: pointer;
+}
