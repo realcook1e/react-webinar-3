@@ -23,6 +23,7 @@ function reducer(state = initialState, action) {
         ...state,
         data: initialData,
         waiting: false,
+        error: action.payload,
       };
 
     default:

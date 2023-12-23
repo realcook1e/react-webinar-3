@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import "./style.css";
 
-function CommentAuth({ onSignIn, onReset }) {
+function CommentAuth({ onSignIn, onReset, label }) {
   return (
-    <p className="CommentAuth">
+    <p className={`CommentAuth ${onReset && "CommentAuth-reply"} `}>
       <span className="CommentAuth-signin" onClick={onSignIn}>
         Войдите
       </span>
-      , чтобы иметь возможность ответить.&nbsp;
-      {!!onReset && (
+      {label}
+      {onReset && (
         <span className="CommentAuth-reset" onClick={onReset}>
           Отмена
         </span>
@@ -18,12 +18,12 @@ function CommentAuth({ onSignIn, onReset }) {
 }
 
 CommentAuth.propTypes = {
+  label: PropTypes.string,
   onReset: PropTypes.func,
   onSignIn: PropTypes.func,
 };
 
 CommentAuth.defaultProps = {
-  onReset: () => {},
   onSignIn: () => {},
 };
 

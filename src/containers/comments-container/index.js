@@ -16,8 +16,8 @@ function CommentsContainer({ productId }) {
   const dispatch = useDispatch();
 
   const [parent, setParent] = useState({
-    relateTo: "product",
-    id: productId,
+    _type: "article",
+    _id: productId,
   });
 
   const select = useStoreSelector((state) => ({
@@ -45,15 +45,15 @@ function CommentsContainer({ productId }) {
   const callbacks = {
     clearParent: useCallback(() => {
       setParent({
-        id: productId,
-        type: "product",
+        _id: productId,
+        _type: "article",
       });
     }, [productId]),
     setParent: useCallback(
       (id) => {
         setParent({
-          id,
-          type: "comment",
+          _id: id,
+          _type: "comment",
         });
       },
       [setParent]
@@ -73,36 +73,41 @@ function CommentsContainer({ productId }) {
   return (
     <Spinner active={select.waiting}>
       <CommentList title={`Комментарии (${select.count})`}>
-        {select.count &&
-          comments.items.map((comment) => (
-            <div
-              key={comment._id}
-              style={{ paddingLeft: `${(comment.level - 1) * 30}px` }}
-            >
-              <Comment {...comment} onReply={callbacks.setParent} />
-              {parent.id === comment._id &&
-                (storeSelect.exists ? (
-                  <CommentField
-                    title="Новый ответ"
-                    onReset={callbacks.clearParent}
-                    onSubmit={callbacks.addComment}
-                  />
-                ) : (
-                  <CommentAuth
-                    onSignIn={callbacks.onSignIn}
-                    onReset={callbacks.clearParent}
-                  />
-                ))}
-            </div>
-          ))}
-        {parent.id === productId &&
+        {select.count
+          ? comments.items.map((comment) => (
+              <div
+                key={comment._id}
+                style={{ paddingLeft: `${(comment.level - 1) * 30}px` }}
+              >
+                <Comment {...comment} onReply={callbacks.setParent} />
+                {parent._id === comment._id &&
+                  (storeSelect.exists ? (
+                    <CommentField
+                      title="Новый ответ"
+                      onReset={callbacks.clearParent}
+                      onSubmit={callbacks.addComment}
+                    />
+                  ) : (
+                    <CommentAuth
+                      onSignIn={callbacks.onSignIn}
+                      onReset={callbacks.clearParent}
+                      label=", чтобы иметь возможность ответить.&nbsp;"
+                    />
+                  ))}
+              </div>
+            ))
+          : ""}
+        {parent._id === productId &&
           (storeSelect.exists ? (
             <CommentField
               title="Новый комментарий"
               onSubmit={callbacks.addComment}
             />
           ) : (
-            <CommentAuth onSignIn={callbacks.onSignIn} />
+            <CommentAuth
+              onSignIn={callbacks.onSignIn}
+              label=", чтобы иметь возможность комментировать."
+            />
           ))}
       </CommentList>
     </Spinner>
