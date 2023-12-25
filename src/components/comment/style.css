@@ -21,10 +21,15 @@
 
 .Comment-text {
   font-size: 14px;
+  word-wrap: break-word;
 }
 
 .Comment-reply {
   color: #0087e9;
   font-size: 12px;
   cursor: pointer;
+}
+
+.Comment-title.active {
+  color: #666;
 }

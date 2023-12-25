@@ -8,7 +8,9 @@ function CommentField(props) {
   const callbacks = {
     onSubmit: (evt) => {
       evt.preventDefault();
-      props.onSubmit(message);
+      message.trim()
+        ? props.onSubmit(message)
+        : console.error("Ошибка! Текст комментария не может быть пустым");
     },
   };
 

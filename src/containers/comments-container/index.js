@@ -28,6 +28,7 @@ function CommentsContainer({ productId }) {
 
   const storeSelect = useSelector((state) => ({
     exists: state.session.exists,
+    user: state.session.user,
   }));
 
   const comments = {
@@ -70,6 +71,7 @@ function CommentsContainer({ productId }) {
     ),
   };
 
+  console.log(storeSelect.username);
   return (
     <Spinner active={select.waiting}>
       <CommentList title={`Комментарии (${select.count})`}>
@@ -77,23 +79,37 @@ function CommentsContainer({ productId }) {
           ? comments.items.map((comment) => (
               <div
                 key={comment._id}
-                style={{ paddingLeft: `${(comment.level - 1) * 30}px` }}
+                style={{
+                  paddingLeft: `${
+                    comment.level < 6 ? (comment.level - 1) * 30 : 120
+                  }px`,
+                }}
               >
-                <Comment {...comment} onReply={callbacks.setParent} />
-                {parent._id === comment._id &&
-                  (storeSelect.exists ? (
-                    <CommentField
-                      title="Новый ответ"
-                      onReset={callbacks.clearParent}
-                      onSubmit={callbacks.addComment}
-                    />
-                  ) : (
-                    <CommentAuth
-                      onSignIn={callbacks.onSignIn}
-                      onReset={callbacks.clearParent}
-                      label=", чтобы иметь возможность ответить.&nbsp;"
-                    />
-                  ))}
+                <Comment
+                  {...comment}
+                  onReply={callbacks.setParent}
+                  activeUserId={storeSelect.user._id}
+                />
+                <div
+                  style={{
+                    paddingLeft: `30px`,
+                  }}
+                >
+                  {parent._id === comment._id &&
+                    (storeSelect.exists ? (
+                      <CommentField
+                        title="Новый ответ"
+                        onReset={callbacks.clearParent}
+                        onSubmit={callbacks.addComment}
+                      />
+                    ) : (
+                      <CommentAuth
+                        onSignIn={callbacks.onSignIn}
+                        onReset={callbacks.clearParent}
+                        label=", чтобы иметь возможность ответить.&nbsp;"
+                      />
+                    ))}
+                </div>
               </div>
             ))
           : ""}

@@ -17,7 +17,11 @@ function Comment(props) {
 
   return (
     <div className="Comment">
-      <p className="Comment-title">
+      <p
+        className={`Comment-title${
+          props.author._id === props.activeUserId ? " active" : ""
+        }`}
+      >
         <b>{props.author.profile.name}</b>
         <span className="Comment-date">{`${date.date} ${date.month} ${date.year} в ${date.hours}:${date.minutes}`}</span>
       </p>
