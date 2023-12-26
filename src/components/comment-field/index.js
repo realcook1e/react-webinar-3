@@ -1,10 +1,10 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import "./style.css";
+import { forwardRef } from "react";
 
-function CommentField(props) {
+const CommentField = forwardRef((props, ref) => {
   const [message, setMessage] = useState("");
-
   const callbacks = {
     onSubmit: (evt) => {
       evt.preventDefault();
@@ -19,6 +19,7 @@ function CommentField(props) {
       className={`CommentField ${props.onReset && "CommentField-reply"} `}
       onReset={props.onReset}
       onSubmit={callbacks.onSubmit}
+      ref={ref}
     >
       <label htmlFor="message">
         <strong>{props.title}</strong>
@@ -45,7 +46,7 @@ function CommentField(props) {
       </div>
     </form>
   );
-}
+});
 
 CommentField.propTypes = {
   title: PropTypes.string,

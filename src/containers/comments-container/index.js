@@ -1,5 +1,5 @@
 import { useDispatch, useSelector as useStoreSelector } from "react-redux";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useSelector from "../../hooks/use-selector";
 import Comment from "../../components/comment";
@@ -10,6 +10,7 @@ import Spinner from "../../components/spinner";
 import listToTree from "../../utils/list-to-tree";
 import treeToList from "../../utils/tree-to-list";
 import commentsActions from "../../store-redux/comments/actions";
+import { useRef } from "react";
 
 function CommentsContainer({ productId }) {
   const navigate = useNavigate();
@@ -19,6 +20,19 @@ function CommentsContainer({ productId }) {
     _type: "article",
     _id: productId,
   });
+
+  const commentInput = useRef();
+
+  useEffect(() => {
+    if (commentInput.current) {
+      const scrollOptions = {
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start",
+      };
+      commentInput.current.scrollIntoView(scrollOptions);
+    }
+  }, [commentInput, parent]);
 
   const select = useStoreSelector((state) => ({
     comments: state.comments.data.items,
@@ -40,6 +54,22 @@ function CommentsContainer({ productId }) {
         ),
       ],
       [select.comments]
+    ),
+    answers: useMemo(
+      () =>
+        treeToList(listToTree(select.comments), (item, level) => ({
+          targetId: item._id,
+          position:
+            item.children.length > 0 ? item.children.at(-1)._id : item._id,
+          offset: level,
+        })),
+      [select.comments]
+    ).reduce(
+      (acc, item) =>
+        acc.has(item.position)
+          ? acc.set(item.position, [...acc.get(item.position), item])
+          : acc.set(item.position, [item]),
+      new Map()
     ),
   };
 
@@ -71,7 +101,6 @@ function CommentsContainer({ productId }) {
     ),
   };
 
-  console.log(storeSelect.username);
   return (
     <Spinner active={select.waiting}>
       <CommentList title={`Комментарии (${select.count})`}>
@@ -81,7 +110,7 @@ function CommentsContainer({ productId }) {
                 key={comment._id}
                 style={{
                   paddingLeft: `${
-                    comment.level < 6 ? (comment.level - 1) * 30 : 120
+                    comment.level < 6 ? comment.level * 30 : 120
                   }px`,
                 }}
               >
@@ -90,26 +119,41 @@ function CommentsContainer({ productId }) {
                   onReply={callbacks.setParent}
                   activeUserId={storeSelect.user._id}
                 />
-                <div
-                  style={{
-                    paddingLeft: `30px`,
-                  }}
-                >
-                  {parent._id === comment._id &&
-                    (storeSelect.exists ? (
-                      <CommentField
-                        title="Новый ответ"
-                        onReset={callbacks.clearParent}
-                        onSubmit={callbacks.addComment}
-                      />
-                    ) : (
-                      <CommentAuth
-                        onSignIn={callbacks.onSignIn}
-                        onReset={callbacks.clearParent}
-                        label=", чтобы иметь возможность ответить.&nbsp;"
-                      />
-                    ))}
-                </div>
+                {comments.answers.has(comment._id) &&
+                  comments.answers.get(comment._id).map((answer) => {
+                    if (parent._id === answer.targetId) {
+                      let inner;
+                      if (storeSelect.exists) {
+                        inner = (
+                          <CommentField
+                            title="Новый ответ"
+                            onReset={callbacks.clearParent}
+                            onSubmit={callbacks.addComment}
+                            ref={commentInput}
+                          />
+                        );
+                      } else {
+                        inner = (
+                          <CommentAuth
+                            onSignIn={callbacks.onSignIn}
+                            onReset={callbacks.clearParent}
+                            label=", чтобы иметь возможность ответить.&nbsp;"
+                          />
+                        );
+                      }
+                      return (
+                        <div
+                          style={{
+                            paddingLeft: `${
+                              comment.level === answer.offset ? 0 : 30
+                            }px`,
+                          }}
+                        >
+                          {inner}
+                        </div>
+                      );
+                    }
+                  })}
               </div>
             ))
           : ""}
